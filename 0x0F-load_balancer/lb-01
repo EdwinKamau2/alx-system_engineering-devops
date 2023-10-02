@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# The Server-01 login commands
+
+# Setting the SSH-agent
+eval $("ssh-agent")
+
+# The path to identify fie
+ssh-add ~/.ssh/school
+
+# The Username and IP Address
+ssh ubuntu@100.25.16.247
