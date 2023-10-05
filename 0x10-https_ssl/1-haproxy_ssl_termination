@@ -1,4 +1,4 @@
-global
+global 
     log 127.0.0.1 local0 notice
     maxconn 2000
     user haproxy
@@ -26,16 +26,11 @@ listen hbnb
     option  forwardfor
     option  http-server-close
 
-frontend www-http
-    bind   34.207.211.58:80
-    reqadd X-Forwarded-Proto:\ http
-    default_backend www-backend
 
-frontend www-https
-    bind   34.207.211.58:443 ssl crt /etc/haproxy/certs/www.eddev.tech.pem
-    reqadd X-Forwarded-Proto:\ https
-    acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-    use_backend letsencrypt-backend if letsencrypt-acl
+frontend www-http
+    bind 0.0.0.0:443 ssl crt /etc/letsencrypt/live/www.eddev.tech/www.eddev.tech.pem
+    http-request add-header X-Forwarded-Proto http
+    http-request redirect scheme https if !{ ssl_fc }
     default_backend www-backend
 
 backend www-backend
